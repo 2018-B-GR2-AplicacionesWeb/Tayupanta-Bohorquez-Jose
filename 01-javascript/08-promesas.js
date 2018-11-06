@@ -61,3 +61,51 @@ promesa('07-texto.txt')
         }
     );
 
+/// Deber
+/DEBER: transformar el for each a promesa
+
+promesaForEach = (arregloStrings)=>{
+    return new Promise(
+        (resolve, reject) => {
+            const arregloRespuestas = [];
+            arregloStrings.forEach(
+                (string, indice)=>{
+                    const nombreArchivo = `${indice}-${string}.txt`;
+                    const contenidoArchivo = 'string';
+
+                    fs.writeFile(nombreArchivo,
+                        contenidoArchivo,
+                        (err)=>{
+                            const respuesta = {
+                                nombreArchivo:nombreArchivo,
+                                contenidoArchivo:contenidoArchivo,
+                                error:err
+                            };
+                            arregloRespuestas.push(respuesta);
+                            const terminoElArreglo = arregloStrings.length == arregloRespuestas.length;
+                            if(terminoElArreglo){
+                                resolve(arregloRespuestas);
+                            }
+
+                        })
+                }
+
+            );
+
+        });
+
+};
+
+
+promesaForEach(['A', 'B', 'C'])
+    .then(
+        (arregloRespuestas) => {
+            console.log('Ok', arregloRespuestas);
+
+        }
+    )
+    .catch(
+        (error) => {
+            console.log('Mal', error);
+        }
+    );
