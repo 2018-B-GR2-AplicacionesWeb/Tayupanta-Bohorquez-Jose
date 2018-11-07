@@ -1,83 +1,98 @@
-//02-observables.ts
-import {distinct} from "rxjs/operators";
-import {concat} from "rxjs";
+// 02-observables.ts
 
 declare var require: any;
-declare var Promise: any;
-
-const rxjs = require('rxjs')
+const rxjs = require('rxjs');
 const map = require('rxjs/operators').map;
+const distinct = require('rxjs/operators').distinct;
+const concat = require('rxjs/operators').concat;
 
-const numeros$ = rxjs.of(1,2,3,4,5,6);
+const numeros$ = rxjs.of(
+    1,
+    true,
+    2,
+    'Adrian',
+    3,
+    {nombre: 'Adrian'},
+    2,
+    ['oli'],
+    2,
+    function () {
+    });
+
 numeros$
     .pipe(
         distinct(),
         map(
-            (valorActal)=>{
-                return{
-                    data: valorActal
-                }
+            (valorActual) => {
+                return {
+                    data: valorActual
+                };
             }
         )
     )
     .subscribe(
-    (ok)=>{
-        console.log('en ok', ok)
-    },
-    (error) => {
-        console.log('error', error)
-    },
-    ()=>{
-        console.log('complete')
-    }
-)
+        (ok) => {
+            console.log('En ok', ok);
+        },
+        (error) => {
+            console.log('Error:', error);
+        },
+        () => {
+            console.log('Complete');
+        },
+    );
 
-const promesa = (funciona: boolean): Promise<string> => {
+const promesita = (funciona: boolean): Promise<string> => {
     return new Promise(
         (resolve, reject) => {
-            if(funciona){
-                resolve(':)')
+            if (funciona) {
+                resolve(' :) ');
             } else {
-                reject(':(')
+                reject(' :( ');
             }
         }
-    )
-}
+    );
+};
 
-const promesa$ = rxjs.from(promesa(true))
-promesa$.subscribe(
-    (ok)=>{
-        console.log('promesa bien', ok)
-    },
-    (error)=>{
-        console.log('promesa mal', error)
-    },
-    ()=>{
-        console.log('completado')
-    }
+const promesita$ = rxjs.from(promesita(true));
 
-)
-
-const observableConcatenado$ = numeros$.pipe(
-    concat(promesa$),
-    distinct(),
-    map(
-        (valorActal)=>{
-            return{
-                data: valorActal
-            }
+promesita$
+    .subscribe(
+        (ok) => {
+            console.log('Promesita bien ', ok);
+        },
+        (error) => {
+            console.log('Promesita mal', error);
+        },
+        () => {
+            console.log('Completado');
         }
-    )
-)
+    );
 
-observableConcatenado$.subscribe(
-    (ok)=>{
-        console.log('promesa bien', ok)
-    },
-    (error)=>{
-        console.log('promesa mal', error)
-    },
-    ()=>{
-        console.log('completado')
-    }
-)
+
+const observableConcatenado$ = numeros$
+    .pipe(
+        concat(promesita$),
+        distinct(),
+        map(
+            (valorActual) => {
+                console.log('Ejecuto');
+                return {
+                    data: valorActual
+                };
+            }
+        )
+    );
+
+observableConcatenado$
+    .subscribe(
+        (ok) => {
+            console.log('Concatenado bien ', ok);
+        },
+        (error) => {
+            console.log('Error', error);
+        },
+        () => {
+            console.log('Completado');
+        }
+    );

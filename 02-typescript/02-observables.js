@@ -1,51 +1,54 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-//02-observables.ts
-var operators_1 = require("rxjs/operators");
-var rxjs_1 = require("rxjs");
+// 02-observables.ts
 var rxjs = require('rxjs');
 var map = require('rxjs/operators').map;
-var numeros$ = rxjs.of(1, 2, 3, 4, 5, 6);
+var distinct = require('rxjs/operators').distinct;
+var concat = require('rxjs/operators').concat;
+var numeros$ = rxjs.of(1, true, 2, 'Adrian', 3, { nombre: 'Adrian' }, 2, ['oli'], 2, function () {
+});
 numeros$
-    .pipe(operators_1.distinct(), map(function (valorActal) {
+    .pipe(distinct(), map(function (valorActual) {
     return {
-        data: valorActal
+        data: valorActual
     };
 }))
     .subscribe(function (ok) {
-    console.log('en ok', ok);
+    console.log('En ok', ok);
 }, function (error) {
-    console.log('error', error);
+    console.log('Error:', error);
 }, function () {
-    console.log('complete');
+    console.log('Complete');
 });
-var promesa = function (funciona) {
+var promesita = function (funciona) {
     return new Promise(function (resolve, reject) {
         if (funciona) {
-            resolve(':)');
+            resolve(' :) ');
         }
         else {
-            reject(':(');
+            reject(' :( ');
         }
     });
 };
-var promesa$ = rxjs.from(promesa(true));
-promesa$.subscribe(function (ok) {
-    console.log('promesa bien', ok);
+var promesita$ = rxjs.from(promesita(true));
+promesita$
+    .subscribe(function (ok) {
+    console.log('Promesita bien ', ok);
 }, function (error) {
-    console.log('promesa mal', error);
+    console.log('Promesita mal', error);
 }, function () {
-    console.log('completado');
+    console.log('Completado');
 });
-var observableConcatenado$ = numeros$.pipe(rxjs_1.concat(promesa$), operators_1.distinct(), map(function (valorActal) {
+var observableConcatenado$ = numeros$
+    .pipe(concat(promesita$), distinct(), map(function (valorActual) {
+    console.log('Ejecuto');
     return {
-        data: valorActal
+        data: valorActual
     };
 }));
-observableConcatenado$.subscribe(function (ok) {
-    console.log('promesa bien', ok);
+observableConcatenado$
+    .subscribe(function (ok) {
+    console.log('Concatenado bien ', ok);
 }, function (error) {
-    console.log('promesa mal', error);
+    console.log('Error', error);
 }, function () {
-    console.log('completado');
+    console.log('Completado');
 });
