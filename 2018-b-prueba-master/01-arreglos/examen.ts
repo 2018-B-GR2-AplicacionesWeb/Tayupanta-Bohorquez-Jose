@@ -1,5 +1,4 @@
 import {first, map} from "rxjs";
-import { basename } from "path";
 
 var require
 const fs = require('fs');
@@ -57,6 +56,7 @@ iniciarBase
         }
     )
 
+
 // 3) Busque los tipos de "skin_color" en el arreglo people.json
 iniciarBase.then(
     (baseDatos) => {
@@ -79,3 +79,31 @@ iniciarBase.then(
         )
     }
 )
+
+//5) Clasifique y cree diferentes arreglos dependiendo del gender, eye_color, skin y hair_color.
+
+
+//6) Cree un arreglo del abecedario, revisar si existe al menos un personaje con cada letra del abecedario.
+const arregloRespuesta =[]
+iniciarBase.then(
+    (baseDatos) => {
+        const contArchivo = JSON.parse(JSON.stringify(baseDatos))
+        const abecedario = {'A':0, 'B': 0, 'C': 0,'D':0,'F':0,'G':0, 'H':0, 'I':0, 'J':0, 'K':0,
+    'L':0, 'M':0, 'N': 0, 'O':0, 'P':0, 'Q': 0, 'R':0,'S':0,'T':0, 'U':0, 'V':0,'W':0, 'X':0,'Y':0,'Z':0}
+    contArchivo.forEach(
+        (actual, indiceActual, array) => {
+            const letra = actual['name'].substring(0,1)
+            if(abecedario[letra]){
+                arregloRespuesta.push({letra: true})
+            }
+            else{
+                arregloRespuesta.push({letra: false})
+            }
+        }
+    )
+    }
+)
+
+console.log(arregloRespuesta)
+
+//7) Calcular la sumatoria de la propiedad "mass" y la propiedad "height".
