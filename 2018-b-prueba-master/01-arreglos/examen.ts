@@ -107,3 +107,70 @@ iniciarBase.then(
 console.log(arregloRespuesta)
 
 //7) Calcular la sumatoria de la propiedad "mass" y la propiedad "height".
+
+const respuestaMasas = {
+    masTotal: Number('0'),
+    heightTotal: Number('0')
+}
+
+iniciarBase.then(
+    (baseDatos) => {
+        const contArchivo = JSON.parse(JSON.stringify(baseDatos))
+        contArchivo.forEach(
+            (actual, indActual, array) => {
+                const mass  = Number(JSON.stringify(actual["massTotal"]));
+                const height= Number(actual["heightTotal"]);
+                console.log(mass + height);
+                respuestaMasas.masTotal = respuestaMasas.masTotal + mass;
+                respuestaMasas.heightTotal = respuestaMasas.heightTotal +height;
+                console.log(respuestaMasas);
+            }
+        )
+    }
+)
+
+//8) Revisar si todos los personajes han usado vehicles.
+iniciarBase.then(
+    (baseDatos) => {
+        const contArchivo = JSON.parse(JSON.stringify(baseDatos))
+        contArchivo.forEach(
+            (actual, indiActual, arrarRespuesta) => {
+                const persona = String(JSON.stringify(actual['name']))
+                const vehiculo = String(JSON.stringify['vehicles'])
+                console.log([persona, vehiculo])
+            }
+        )
+    }
+)
+
+//9) Revisar si todos los personajes han usado starships.
+iniciarBase.then(
+    (baseDatos) => {
+        const contArchivo = JSON.parse(JSON.stringify(baseDatos))
+        contArchivo.forEach(
+            (actual, indiActual, arrarRespuesta) => {
+                const persona = String(JSON.stringify(actual['name']))
+                const vehiculo = String(JSON.stringify['starships'])
+                console.log([persona, vehiculo])
+            }
+        )
+    }
+)
+
+//10) Calcular en cuantos films han aparecido cada personaje:
+
+//11) Realizar la operacion de crear nuevos people con la libreria inquirer.js
+const opcionesMenu ={
+    type: 'list',
+    name: 'opcionMenu',
+    message: 'Escoge la opción qué desees: ',
+    choices: [
+        'Crear',
+    ]
+};
+
+const preguntasAlUsuario = [
+    { type: 'input', name: 'nombre', message: 'Ingrese el nombre del personaje: '},
+    { type: 'input', name: 'specie', message: 'Ingrese la specie: '},
+
+];
